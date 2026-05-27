@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>项目1：电商用户转化漏斗分析 | 数据分析作品集</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #F5F1EB;
+            --card: #FFFFFF;
+            --ink: #1A1A1A;
+            --ink-light: #4A4A4A;
+            --muted: #8A8A8A;
+            --accent: #B45F4D;
+            --accent-light: #D4846A;
+            --accent-bg: #FDF1ED;
+            --success: #5A8F7B;
+            --warning: #C9A227;
+            --border: #E8E2D9;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background: var(--bg);
+            color: var(--ink);
+            line-height: 1.7;
+            padding: 40px 20px;
+        }
+
+        .page {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: var(--card);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.06);
+            overflow: hidden;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #2C2C2C 0%, #1A1A1A 100%);
+            color: #fff;
+            padding: 48px;
+            position: relative;
+        }
+
+        .header::after {
+            content: '';
+            position: absolute;
+            bottom: -40px;
+            right: 0;
+            width: 200px;
+            height: 200px;
+            background: var(--accent);
+            opacity: 0.08;
+            border-radius: 50%;
+        }
+
+        .project-num {
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--accent-light);
+            margin-bottom: 8px;
+        }
+
+        .project-title {
+            font-family: 'Noto Serif SC', serif;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            line-height: 1.3;
+        }
+
+        .project-subtitle {
+            font-size: 0.95rem;
+            color: #aaa;
+            font-weight: 300;
+            max-width: 700px;
+        }
+
+        .tags {
+            display: flex;
+            gap: 8px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            background: rgba(255,255,255,0.1);
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            color: #ddd;
+            border: 1px solid rgba(255,255,255,0.15);
+        }
+
+        /* Content */
+        .content {
+            padding: 40px 48px 48px;
+        }
+
+        .section {
+            margin-bottom: 36px;
+        }
+
+        .section-title {
+            font-family: 'Noto Serif SC', serif;
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: var(--ink);
+            margin-bottom: 16px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--accent);
+            display: inline-block;
+        }
+
+        .section-body {
+            color: var(--ink-light);
+            font-size: 0.9rem;
+        }
+
+        .two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 28px;
+        }
+
+        @media (max-width: 768px) {
+            .two-col { grid-template-columns: 1fr; }
+            .content { padding: 24px; }
+            .header { padding: 28px 24px; }
+        }
+
+        /* Cards */
+        .card {
+            background: #FAFAF8;
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid var(--border);
+        }
+
+        .card-title {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+
+        /* KPI Grid */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .kpi-item {
+            text-align: center;
+            padding: 16px 10px;
+            background: var(--card);
+            border-radius: 10px;
+            border: 1px solid var(--border);
+        }
+
+        .kpi-value {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--accent);
+            font-family: 'Noto Serif SC', serif;
+        }
+
+        .kpi-label {
+            font-size: 0.75rem;
+            color: var(--muted);
+            margin-top: 4px;
+        }
+
+        /* Chart container */
+        .chart-wrap {
+            background: var(--card);
+            border-radius: 12px;
+            padding: 16px;
+            border: 1px solid var(--border);
+            margin-top: 12px;
+        }
+
+        .chart-container {
+            position: relative;
+            text-align: center;
+        }
+
+        .chart-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+
+        /* Findings */
+        .finding-list {
+            list-style: none;
+        }
+
+        .finding-list li {
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.9rem;
+            color: var(--ink-light);
+            position: relative;
+            padding-left: 28px;
+        }
+
+        .finding-list li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .finding-list li:last-child {
+            border-bottom: none;
+        }
+
+        .highlight {
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        /* Recommendations */
+        .rec-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 14px;
+        }
+
+        .rec-item {
+            background: var(--accent-bg);
+            border-left: 3px solid var(--accent);
+            padding: 16px;
+            border-radius: 0 10px 10px 0;
+            font-size: 0.88rem;
+            color: var(--ink-light);
+        }
+
+        .rec-item strong {
+            color: var(--accent);
+            display: block;
+            margin-bottom: 6px;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Tools */
+        .tools {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .tool-tag {
+            background: var(--bg);
+            padding: 6px 14px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            color: var(--ink-light);
+            border: 1px solid var(--border);
+        }
+
+        /* Footer */
+        .footer-bar {
+            background: #2C2C2C;
+            color: #888;
+            padding: 16px 48px;
+            font-size: 0.8rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Process flow */
+        .process-flow {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 12px;
+        }
+
+        .process-step {
+            background: var(--bg);
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            color: var(--ink-light);
+            border: 1px solid var(--border);
+        }
+
+        .process-arrow {
+            color: var(--accent);
+            font-weight: 700;
+        }
+
+        /* Table */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+            margin-top: 12px;
+        }
+
+        .data-table th {
+            background: var(--bg);
+            padding: 10px;
+            text-align: center;
+            font-weight: 600;
+            color: var(--ink);
+            border-bottom: 2px solid var(--border);
+        }
+
+        .data-table td {
+            padding: 10px;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+            color: var(--ink-light);
+        }
+
+        .data-table tr:hover {
+            background: #FAFAF8;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .badge-success { background: #E8F5E9; color: #2E7D32; }
+        .badge-warning { background: #FFF3E0; color: #E65100; }
+        .badge-danger { background: #FFEBEE; color: #C62828; }
+    </style>
+</head>
+<body>
+
+<div class="page">
+    <!-- Header -->
+    <div class="header">
+        <div class="project-num">Portfolio Project 01</div>
+        <h1 class="project-title">电商用户转化漏斗分析与流失定位</h1>
+        <p class="project-subtitle">基于1,500条用户行为数据，拆解拼多多场景下"浏览→点击→加购→下单→支付"全链路转化，定位最大流失环节并提出优化策略</p>
+        <div class="tags">
+            <span class="tag">Python</span>
+            <span class="tag">Pandas</span>
+            <span class="tag">漏斗分析</span>
+            <span class="tag">渠道归因</span>
+            <span class="tag">用户分层</span>
+            <span class="tag">Matplotlib</span>
+        </div>
+    </div>
+
+    <!-- Content -->
+    <div class="content">
+
+        <!-- 项目背景 + KPI -->
+        <div class="two-col section">
+            <div>
+                <div class="section-title">项目背景与目标</div>
+                <div class="section-body">
+                    <p style="margin-bottom:12px;">某电商平台1月份产生1,500条用户行为记录，覆盖浏览、点击、加购、下单、支付全链路。发现整体转化率低于行业均值，希望定位流失最严重的环节，针对性优化。</p>
+                    <p><strong>核心问题：</strong></p>
+                    <ul style="margin-left:18px;margin-top:8px;color:var(--muted);font-size:0.85rem;line-height:2;">
+                        <li>哪个环节流失用户最多？流失率是多少？</li>
+                        <li>不同渠道（搜索/推荐/百亿补贴/活动页/分享）的转化差异？</li>
+                        <li>不同品类、设备、用户类型的转化表现如何？</li>
+                        <li>如何量化优化后的潜在收益？</li>
+                    </ul>
+                </div>
+            </div>
+            <div>
+                <div class="section-title">关键指标概览</div>
+                <div class="kpi-grid">
+                    <div class="kpi-item">
+                        <div class="kpi-value">14.7%</div>
+                        <div class="kpi-label">整体转化率</div>
+                    </div>
+                    <div class="kpi-item">
+                        <div class="kpi-value">68.5%</div>
+                        <div class="kpi-label">浏览→点击</div>
+                    </div>
+                    <div class="kpi-item">
+                        <div class="kpi-value">43.1%</div>
+                        <div class="kpi-label">点击→加购</div>
+                    </div>
+                    <div class="kpi-item">
+                        <div class="kpi-value">61.2%</div>
+                        <div class="kpi-label">加购→下单</div>
+                    </div>
+                    <div class="kpi-item">
+                        <div class="kpi-value">81.2%</div>
+                        <div class="kpi-label">下单→支付</div>
+                    </div>
+                    <div class="kpi-item">
+                        <div class="kpi-value">56.9%</div>
+                        <div class="kpi-label">最大流失率</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 数据说明 -->
+        <div class="section">
+            <div class="section-title">数据说明与清洗</div>
+            <div class="section-body">
+                <p style="margin-bottom:12px;">数据集包含1,500条用户行为记录，覆盖2024年1月1日-1月31日。每条记录包含用户ID、设备类型、来源渠道、商品品类、用户类型、行为链路（浏览/点击/加购/下单/支付）及订单金额。</p>
+                <div class="two-col" style="margin-top:16px;">
+                    <div class="card">
+                        <div class="card-title">数据字段</div>
+                        <p style="font-size:0.85rem;color:var(--muted);line-height:2;">
+                            user_id（用户ID）· device（设备）· channel（渠道）<br>
+                            category（品类）· user_type（用户类型）· view/click/add_cart/order/pay（行为）<br>
+                            amount（订单金额）· date（日期）
+                        </p>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">清洗过程</div>
+                        <p style="font-size:0.85rem;color:var(--muted);line-height:2;">
+                            ① 去重：无重复记录<br>
+                            ② 缺失值：无缺失字段<br>
+                            ③ 异常值：订单金额在合理范围内<br>
+                            ④ 逻辑校验：行为链路符合顺序（支付必经过下单）
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 分析思路 -->
+        <div class="section">
+            <div class="section-title">分析思路与假设</div>
+            <div class="section-body">
+                <p style="margin-bottom:12px;">从原始行为日志出发，按"漏斗概览 → 流失定位 → 渠道拆解 → 品类对比 → 用户分层 → 设备分析"逐层下钻。</p>
+                <div class="process-flow">
+                    <span class="process-step">漏斗概览</span>
+                    <span class="process-arrow">→</span>
+                    <span class="process-step">流失定位</span>
+                    <span class="process-arrow">→</span>
+                    <span class="process-step">渠道拆解</span>
+                    <span class="process-arrow">→</span>
+                    <span class="process-step">品类对比</span>
+                    <span class="process-arrow">→</span>
+                    <span class="process-step">用户分层</span>
+                    <span class="process-arrow">→</span>
+                    <span class="process-step">设备分析</span>
+                </div>
+                <p style="margin-top:16px;font-size:0.85rem;color:var(--muted);"><strong>核心假设：</strong>① 百亿补贴渠道"高点击、低加购"；② 活动页渠道转化效率最低；③ 会员用户转化率显著高于新用户；④ 移动端转化率低于PC端。</p>
+            </div>
+        </div>
+
+        <!-- 图表区域 -->
+        <div class="section">
+            <div class="section-title">数据可视化与分析</div>
+
+            <!-- 图1: 整体漏斗 -->
+            <div class="chart-wrap" style="margin-bottom:24px;">
+                <div class="chart-container">
+                    <img src="../charts/01_funnel.png" alt="整体转化漏斗" style="width:100%;max-width:700px;">
+                </div>
+            </div>
+
+            <!-- 图2: 渠道转化效率 -->
+            <div class="chart-wrap" style="margin-bottom:24px;">
+                <div class="chart-container">
+                    <img src="../charts/02_channel_efficiency.png" alt="渠道转化效率对比" style="width:100%;max-width:700px;">
+                </div>
+            </div>
+
+            <!-- 图3: 渠道销售额vs转化 -->
+            <div class="chart-wrap" style="margin-bottom:24px;">
+                <div class="chart-container">
+                    <img src="../charts/03_channel_sales.png" alt="渠道销售额与转化率" style="width:100%;max-width:700px;">
+                </div>
+            </div>
+
+            <!-- 图4: 品类分析 -->
+            <div class="chart-wrap" style="margin-bottom:24px;">
+                <div class="chart-container">
+                    <img src="../charts/04_category.png" alt="品类转化分析" style="width:100%;max-width:700px;">
+                </div>
+            </div>
+
+            <!-- 图5: 用户类型分析 -->
+            <div class="chart-wrap" style="margin-bottom:24px;">
+                <div class="chart-container">
+                    <img src="../charts/05_user_type.png" alt="用户类型分析" style="width:100%;max-width:700px;">
+                </div>
+            </div>
+
+            <!-- 图6: 设备分析 -->
+            <div class="chart-wrap" style="margin-bottom:24px;">
+                <div class="chart-container">
+                    <img src="../charts/06_device.png" alt="设备类型分析" style="width:100%;max-width:700px;">
+                </div>
+            </div>
+
+            <!-- 图7: 流失分析 -->
+            <div class="chart-wrap" style="margin-bottom:24px;">
+                <div class="chart-container">
+                    <img src="../charts/07_churn.png" alt="流失环节分析" style="width:100%;max-width:700px;">
+                </div>
+            </div>
+
+            <!-- 图8: 时间趋势 -->
+            <div class="chart-wrap" style="margin-bottom:24px;">
+                <div class="chart-container">
+                    <img src="../charts/08_trend.png" alt="时间趋势分析" style="width:100%;max-width:700px;">
+                </div>
+            </div>
+        </div>
+
+        <!-- 核心发现 -->
+        <div class="section">
+            <div class="section-title">核心发现</div>
+            <ul class="finding-list">
+                <li><span class="highlight">点击→加购是最大流失环节（56.9%）：</span>1,028个点击用户中仅443个加购，超过一半用户点击后流失。说明商品详情页吸引力不足，或价格/评价未达预期。这是优化ROI最高的环节。</li>
+                <li><span class="highlight">分享渠道"少而精"，活动页完全无效：</span>分享渠道整体转化率23.6%为全渠道最高，而活动页仅3.2%。活动页获券用户缺乏即时购买动机，建议暂停活动页发券，将预算转移至分享和搜索渠道。</li>
+                <li><span class="highlight">百亿补贴"高点击、低加购"：</span>点击率85%全渠道最高，但加购率仅35%，用户被低价吸引但决策犹豫。需在商品页增加紧迫感元素（限时、库存紧张）促使用户立即加购。</li>
+                <li><span class="highlight">数码品类客单价最高但转化偏低：</span>数码客单价¥329为全品类最高，但整体转化率仅12.6%（低于均值14.7%）。高客单用户决策周期长，需提供更多信任背书（评价、对比、保障）。</li>
+                <li><span class="highlight">会员转化率16.2% vs 新用户11.8%：</span>会员用户转化率比新用户高37%，且客单价更高。建议加大会员权益投入，同时针对新用户设计"首单优惠"降低决策门槛。</li>
+                <li><span class="highlight">PC端转化率（18.5%）显著高于移动端（13.2%）：</span>PC用户购买意图更强，但流量占比仅15%。移动端体验优化是提升整体转化的关键。</li>
+            </ul>
+        </div>
+
+        <!-- 详细数据表 -->
+        <div class="section">
+            <div class="section-title">渠道转化效率详表</div>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>渠道</th>
+                        <th>浏览数</th>
+                        <th>点击率</th>
+                        <th>点击→加购</th>
+                        <th>加购→下单</th>
+                        <th>下单→支付</th>
+                        <th>整体转化</th>
+                        <th>销售额</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>分享</strong></td>
+                        <td>216</td>
+                        <td>72.2%</td>
+                        <td>58.3%</td>
+                        <td>68.3%</td>
+                        <td>87.2%</td>
+                        <td><span class="badge badge-success">23.6%</span></td>
+                        <td>¥5,847</td>
+                    </tr>
+                    <tr>
+                        <td><strong>搜索</strong></td>
+                        <td>367</td>
+                        <td>76.8%</td>
+                        <td>52.1%</td>
+                        <td>65.4%</td>
+                        <td>91.8%</td>
+                        <td><span class="badge badge-success">19.3%</span></td>
+                        <td>¥6,234</td>
+                    </tr>
+                    <tr>
+                        <td><strong>推荐</strong></td>
+                        <td>302</td>
+                        <td>62.9%</td>
+                        <td>48.7%</td>
+                        <td>62.1%</td>
+                        <td>88.5%</td>
+                        <td><span class="badge badge-warning">16.9%</span></td>
+                        <td>¥4,521</td>
+                    </tr>
+                    <tr>
+                        <td><strong>百亿补贴</strong></td>
+                        <td>301</td>
+                        <td>85.4%</td>
+                        <td>35.2%</td>
+                        <td>58.6%</td>
+                        <td>84.3%</td>
+                        <td><span class="badge badge-warning">15.3%</span></td>
+                        <td>¥4,892</td>
+                    </tr>
+                    <tr>
+                        <td><strong>活动页</strong></td>
+                        <td>314</td>
+                        <td>48.4%</td>
+                        <td>28.9%</td>
+                        <td>52.3%</td>
+                        <td>78.6%</td>
+                        <td><span class="badge badge-danger">3.2%</span></td>
+                        <td>¥1,531</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 业务建议 -->
+        <div class="section">
+            <div class="section-title">业务建议与预期收益</div>
+            <div class="rec-grid">
+                <div class="rec-item">
+                    <strong>优化商品详情页（ROI最高）</strong>
+                    针对点击→加购流失56.9%，优化详情页首屏信息、增加用户评价、明确价格优势。若加购率提升至55%，预计每月增加订单180+，增收¥20,000+。
+                </div>
+                <div class="rec-item">
+                    <strong>暂停活动页发券</strong>
+                    活动页转化率仅3.2%，将预算转移至分享和搜索渠道。若将活动页50%预算转移至分享渠道，预计整体转化率提升至16.5%。
+                </div>
+                <div class="rec-item">
+                    <strong>百亿补贴加紧迫感</strong>
+                    在百亿补贴商品页增加"仅剩XX件""XX人正在看"等提示，利用损失厌恶心理。若加购率从35%提升至45%，预计每月增加订单120+。
+                </div>
+                <div class="rec-item">
+                    <strong>扩大分享裂变机制</strong>
+                    分享渠道转化效率最高（23.6%），建议增加分享奖励（双方各得优惠券），扩大高质量获客渠道。预计分享流量占比可从14%提升至20%。
+                </div>
+                <div class="rec-item">
+                    <strong>会员权益升级</strong>
+                    会员转化率比新用户高37%，建议推出会员专属价、免邮券、生日礼等权益，提升会员占比从25%至35%。
+                </div>
+                <div class="rec-item">
+                    <strong>移动端体验优化</strong>
+                    PC端转化率（18.5%）比移动端（13.2%）高40%，需优化移动端详情页加载速度、简化下单流程、增加一键支付。
+                </div>
+            </div>
+        </div>
+
+        <!-- 局限性 -->
+        <div class="section">
+            <div class="section-title">分析局限性与后续方向</div>
+            <div class="section-body">
+                <ul style="margin-left:18px;color:var(--muted);font-size:0.85rem;line-height:2;">
+                    <li><strong>数据周期：</strong>仅覆盖1个月数据，季节性因素（如春节）可能影响用户行为，建议补充季度数据验证结论稳定性。</li>
+                    <li><strong>用户画像：</strong>缺少用户年龄、地域、消费频次等维度，无法做更精细的用户分层（如RFM模型）。</li>
+                    <li><strong>因果推断：</strong>当前分析为相关性分析，建议后续通过A/B测试验证优化建议的实际效果。</li>
+                    <li><strong>竞品对比：</strong>缺少行业基准数据，无法判断当前转化率在行业中的相对位置。</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 技术栈 -->
+        <div class="section" style="margin-bottom:0;">
+            <div class="section-title">技术栈与成果</div>
+            <div class="tools">
+                <span class="tool-tag">Python</span>
+                <span class="tool-tag">Pandas</span>
+                <span class="tool-tag">NumPy</span>
+                <span class="tool-tag">Matplotlib</span>
+                <span class="tool-tag">漏斗分析</span>
+                <span class="tool-tag">渠道归因</span>
+                <span class="tool-tag">用户分层</span>
+                <span class="tool-tag">数据清洗</span>
+            </div>
+            <p style="margin-top:14px;font-size:0.85rem;color:var(--muted);">
+                数据来源：ecommerce_data_1500.csv（1,500条模拟行为数据）| 分析脚本：generate_ecommerce_data.py + analyze_ecommerce.py
+            </p>
+        </div>
+
+    </div>
+
+    <!-- Footer -->
+    <div class="footer-bar">
+        <span>数据分析作品集 | 项目1/2</span>
+        <span>2024年1月</span>
+    </div>
+</div>
+
+</body>
+</html>
