@@ -408,15 +408,16 @@ export function VisualWorks() {
                 ></span>
               </div>
 
-              <div className="grid grid-cols-3 md:grid-cols-4 gap-3 mb-4">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
                 {eventWorks.images.map((img, i) => (
-                  <div key={i} className="relative bg-gray-50 rounded-lg overflow-hidden border border-gray-100 aspect-[3/4]">
+                  <div key={i} className="relative bg-gray-50 rounded-lg overflow-hidden border border-gray-100">
                     <Image
                       src={img}
                       alt={`学院活动 ${i + 1}`}
-                      fill
-                      className="object-cover"
-                      sizes="(max-width: 768px) 33vw, 20vw"
+                      width={300}
+                      height={400}
+                      className="w-full h-auto object-contain"
+                      sizes="(max-width: 768px) 50vw, 25vw"
                     />
                   </div>
                 ))}
