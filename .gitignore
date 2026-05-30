@@ -1,6 +1,14 @@
-/.vscode
-/for offer
-/vibe-coding
-/实习
-/求职工作流优化计划.md
-/附件
+node_modules
+dist/
+.next/
+for offer/
+实习/
+作品集_刘婷/
+vibe-coding/
+.agents/
+.trae/
+__pycache__/
+*.py
+*.csv
+*.zip
+.DS_Store
